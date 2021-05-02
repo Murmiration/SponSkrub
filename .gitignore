@@ -16,6 +16,8 @@ youtube-dl-sponsorblock.dll
 youtube-dl-sponsorblock.a
 youtube-dl-sponsorblock.lib
 youtube-dl-sponsorblock-test-*
+*.sublime-*
+*.dll
 *.exe
 *.o
 *.obj
