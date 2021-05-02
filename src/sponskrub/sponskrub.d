@@ -68,51 +68,28 @@ int main(string[] args)
 
 	if ("h" in parsed_arguments.flag_arguments || parsed_arguments.unrecognised_arguments.length > 0 || parsed_arguments.get_missing_arguments().length > 0) {
 		writeln(
-"Usage: sponskrub [-h] [-chapter] [-exclude-sponsors] [-include-intros] [-include-outros] [-include-interactions] [-include-selfpromo] [-include-nonmusic] [-keep-date] [-proxy proxy] [-api-url url] video_id input_filename output_filename
+"Usage: sponskrub [options] [--] video_id input_filename output_filename
 
-SponSkrub is an application for removing sponsors from downloaded Youtube video
- files, it requires an internet connection in order to consult the SponsorBlock
- database and ffmpeg must be installed.
+SponSkrub is a command line utility for removing sponsors from downloaded Youtube videos.
+It requires an internet connection in order to consult the SponsorBlock database and
+ffmpeg & ffprobe must be installed for modifying the video files.
 
 Options:
- -h
-   Display this help string
-
- -chapter
-	 Mark sponsor spots as chapters rather than removing them.
-	 Faster but leads to bigger file sizes
- 
- -exclude-sponsors
-   Exclude sponsors from the categories to be cut or marked as chapters
-
- -include-intros
-   Cut or mark as chapters introductions (e.g: 'welcome to my video!')
-
- -include-outros
-   Cut or mark as chapters outros (e.g: 'see you next week')
-
- -include-interactions
-   Cut or mark as chapters interactions (e.g: 'like this video if you liked it!')
- 
- -include-selfpromo
-   Cut or mark as chapters self promotion (e.g: 'visit our merch store')
- 
- -include-nonmusic
-   Cut or mark as chapters portions of music videos without music
-
- -api-url
-   Specify the url where the API is located, defaults to sponsor.ajay.app
- 
- -no-id
-   Searches for sponsor data by the partial hash of the video id instead of
-	 directly requesting it.
-	 This adds a degree of privacy, but is slightly slower and uses more bandwidth.
- 
- -keep-date
-   Give the output file the same modification date as the input file.
-
- -proxy
-   Allows you to specify a proxy to route any requests through
+  -h                     Display help
+  -chapter               Mark sections as chapters rather than removing them
+  -exclude-sponsors      Do not remove sponsors
+  -exclude-intros        Do not remove introductions
+  -exclude-outros        Do not remove outros
+  -exclude-interactions  Do not remove interactions
+  -exclude-selfpromo     Do not remove self-promotion
+  -exclude-nonmusic      Do not remove non-music portions of music videos
+  -proxy                 Route all trafic through this proxy
+  -no-id                 Searches for sponsor data by the partial hash of the
+                         video id instead of directly requesting it
+  -no-keep-date          Do not give the output file the same modification date
+                         as the input file
+  -api-url               Specify the url where the API is located, defaults to
+                         sponsor.ajay.app
 ");
 		return 1;
 	}
