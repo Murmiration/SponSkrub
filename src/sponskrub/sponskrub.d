@@ -158,10 +158,11 @@ Options:
 		}	catch (std.net.curl.HTTPStatusException e) {
 			if (e.status == 404) {
 				writeln("This video has no ad information available, either it has no ads or no one has logged any on SponsorBlock yet.");
+				return 3;
 			} else {
 				writeln("Got %s the server must be broken, try again later".format(e.status));
+				return 6;
 			}
-			return 3;
 		} catch (std.net.curl.CurlException e) {
 			writeln("Couldn't connect to the Sponsorblock API");
 			if (proxy != "") {
@@ -221,7 +222,7 @@ Options:
 				return 0;
 			} else {
 				writeln("There was an issue generating the output file, is ffmpeg installed? This could be a bug");
-				return 2;
+				return 5;
 			}
 		} else {
 			writeln("Nothing to be done.");
