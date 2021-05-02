@@ -43,13 +43,13 @@ int main(string[] args)
 			new ArgTemplate("chapter", true),
 			new ArgTemplate("h", true),
 			new ArgTemplate("exclude-sponsors", true),
-			new ArgTemplate("include-intros", true),
-			new ArgTemplate("include-outros", true),
-			new ArgTemplate("include-interactions", true),
-			new ArgTemplate("include-selfpromo", true),
-			new ArgTemplate("include-nonmusic", true),
+			new ArgTemplate("exclude-intros", true),
+			new ArgTemplate("exclude-outros", true),
+			new ArgTemplate("exclude-interactions", true),
+			new ArgTemplate("exclude-selfpromo", true),
+			new ArgTemplate("exclude-nonmusic", true),
 			new ArgTemplate("no-id", true),
-			new ArgTemplate("keep-date", true),
+			new ArgTemplate("no-keep-date", true),
 			new ArgTemplate("api-url", true, false, 1),
 			new ArgTemplate("proxy", true, false, 1),
 		]);
@@ -214,7 +214,7 @@ Options:
 			}
 
 			if (ffmpeg_status) {
-				if ("keep-date" in parsed_arguments.flag_arguments) {
+				if ("no-keep-date" !in parsed_arguments.flag_arguments) {
 					copy_file_modified_time(input_filename, output_filename);
 				}
 
@@ -236,19 +236,19 @@ Categories[] categories_from_arguments(Args arguments) {
 	if ("exclude-sponsors" !in arguments.flag_arguments) {
 		categories ~= Categories.Sponsor;
 	}
-	if ("include-intros" in arguments.flag_arguments) {
+	if ("exclude-intros" !in arguments.flag_arguments) {
 		categories ~= Categories.Intro;
 	}
-	if ("include-outros" in arguments.flag_arguments) {
+	if ("exclude-outros" !in arguments.flag_arguments) {
 		categories ~= Categories.Outro;
 	}
-	if ("include-interactions" in arguments.flag_arguments) {
+	if ("exclude-interactions" !in arguments.flag_arguments) {
 		categories ~= Categories.Interaction;
 	}
-	if ("include-selfpromo" in arguments.flag_arguments) {
+	if ("exclude-selfpromo" !in arguments.flag_arguments) {
 		categories ~= Categories.SelfPromo;
 	}
-	if ("include-nonmusic" in arguments.flag_arguments) {
+	if ("exclude-nonmusic" !in arguments.flag_arguments) {
 		categories ~= Categories.NonMusic;
 	}
 
