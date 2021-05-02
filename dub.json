@@ -11,8 +11,7 @@
 			"name": "all",
 			"targetType": "none",
 			"dependencies": {
-				"sponskrub:sponskrub": "*",
-				"sponskrub:youtube-dl-sponsorblock": "*"
+				"sponskrub:sponskrub": "*"
 			}
 		}
 	],
@@ -21,15 +20,7 @@
 			"name": "sponskrub",
 			"targetType": "executable",
 			"mainSourceFile": "src/sponskrub/sponskrub.d",
-			"excludedSourceFiles": [ "src/youtube_dl_sponsorblock/*"],
 			"targetName": "./sponskrub"
-		},
-		{
-			"name": "youtube-dl-sponsorblock",
-			"targetType": "executable",
-			"mainSourceFile": "src/youtube_dl_sponsorblock/youtube_dl_sponsorblock.d",
-			"excludedSourceFiles": [ "src/sponskrub/*"],
-			"targetName": "./youtube-dl-sponsorblock"
 		}
 	]
 }
