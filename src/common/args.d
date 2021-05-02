@@ -26,21 +26,21 @@ class ArgTemplate {
   bool required;
   bool flag;
   int subarguments;
-  
+
   this(string name) {
     this.name = name;
     this.required = true;
     this.flag = false;
     this.subarguments = false;
   }
-  
+
   this(string name, bool flag) {
     this.name = name;
     this.required = false;
     this.flag = flag;
     this.subarguments = false;
   }
-  
+
   this(string name, bool flag, bool required, int subarguments) {
     this.name = name;
     this.flag = flag;
@@ -52,15 +52,15 @@ class ArgTemplate {
 class Args {
   ArgTemplate[] required_positional_argument_templates;
   ArgTemplate[string] required_flag_argument_templates;
-  
+
   ArgTemplate[] positional_argument_templates;
   ArgTemplate[string] flag_argument_templates;
-  
+
   string[] positional_arguments;
   string[][string] flag_arguments;
-  
+
   string[] unrecognised_arguments;
-  
+
   this(ArgTemplate[] args_templates) {
     foreach (ArgTemplate arg_template; args_templates) {
       if (arg_template.flag) {
@@ -76,12 +76,12 @@ class Args {
       }
     }
   }
-  
+
   void parse(string[] args) {
     int remaining_subarguments = 0;
     bool force_positional_argument = false;
     string flag_name;
-    
+
     foreach (string arg; args) {
       if (remaining_subarguments > 0) {
         flag_arguments[flag_name] ~= arg;
@@ -107,20 +107,20 @@ class Args {
       }
     }
   }
-  
+
   string[] get_missing_arguments() {
     string[] missing_arguments;
-    
+
     foreach (string required_flag; required_flag_argument_templates.byKey()) {
       if (required_flag !in flag_arguments) {
         missing_arguments ~= required_flag;
       }
     }
-    
+
     if (positional_arguments.length < required_positional_argument_templates.length) {
       missing_arguments ~= required_positional_argument_templates[positional_arguments.length..$].map!(x => x.name).array;
     }
-    
+
     return missing_arguments;
   }
 }

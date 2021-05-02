@@ -41,11 +41,11 @@ ClipChapterTime[] merge_sponsor_times_with_chapters(ClipTime[] sponsor_times, Ch
 	auto chapter_index = 0;
 	auto is_sponsor = false;
 	string clip_terminal = "0";
-	
+
 	if (sponsor_times[sponsor_index].start.to!float == 0) {
 		is_sponsor = true;
 	}
-	
+
 	while (chapter_index < chapter_times.length) {
 		if (is_sponsor) {
 			//if the stack has items we need to create clips from where we are now to either the end of that sponsorship or the beginning of the next
@@ -58,7 +58,7 @@ ClipChapterTime[] merge_sponsor_times_with_chapters(ClipTime[] sponsor_times, Ch
 					//  if that sponsor ends after this sponsor we can pop this sponsor
 					clip_chapters ~= ClipChapterTime(clip_terminal, sponsor_times[sponsor_index].start, "sponskrub-" ~ sponsor_times[sponsor_index].category, "");
 					clip_terminal = sponsor_times[sponsor_index].start;
-					
+
 					if (sponsor_times[sponsor_index].end.to!float > sponsor_stack.peek().end.to!float) {
 						sponsor_stack.pop();
 					}
@@ -82,12 +82,12 @@ ClipChapterTime[] merge_sponsor_times_with_chapters(ClipTime[] sponsor_times, Ch
 				//add the current sponsor up to the next sponsor
 				clip_chapters ~= ClipChapterTime(clip_terminal, sponsor_times[sponsor_index+1].start, "sponskrub-" ~ sponsor_times[sponsor_index].category, "");
 				clip_terminal = sponsor_times[sponsor_index+1].start;
-				
+
 				if (sponsor_times[sponsor_index+1].end.to!float < sponsor_times[sponsor_index].end.to!float) {
 					//if that sponsor ends before this sponsor ends we should push it to the stack
 					sponsor_stack.push(sponsor_times[sponsor_index]);
 				}
-				
+
 				//go to the next sponsor
 				sponsor_index++;
 			}
@@ -111,7 +111,7 @@ ClipChapterTime[] merge_sponsor_times_with_chapters(ClipTime[] sponsor_times, Ch
 			clip_terminal = next_terminal;
 		}
 	}
-	
+
 	return clip_chapters;
 }
 

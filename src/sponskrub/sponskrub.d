@@ -53,19 +53,19 @@ int main(string[] args)
 			new ArgTemplate("api-url", true, false, 1),
 			new ArgTemplate("proxy", true, false, 1),
 		]);
-		
+
 	parsed_arguments.parse(args);
-	
+
 	if (parsed_arguments.get_missing_arguments().length > 0) {
 		writeln("Missing arguments: " ~ parsed_arguments.get_missing_arguments().join(" "));
 		writeln();
 	}
-	
+
 	if (parsed_arguments.unrecognised_arguments.length > 0) {
 		writeln("Unrecognised arguments: " ~ parsed_arguments.unrecognised_arguments.join(" "));
 		writeln();
 	}
-		
+
 	if ("h" in parsed_arguments.flag_arguments || parsed_arguments.unrecognised_arguments.length > 0 || parsed_arguments.get_missing_arguments().length > 0) {
 		writeln(
 "Usage: sponskrub [-h] [-chapter] [-exclude-sponsors] [-include-intros] [-include-outros] [-include-interactions] [-include-selfpromo] [-include-nonmusic] [-keep-date] [-proxy proxy] [-api-url url] video_id input_filename output_filename
@@ -116,21 +116,21 @@ Options:
 ");
 		return 1;
 	}
-	
+
 	string api_url;
 	if ("api-url" in parsed_arguments.flag_arguments) {
 		api_url = parsed_arguments.flag_arguments["api-url"].join;
 	} else {
 		api_url = "sponsor.ajay.app";
 	}
-	
+
 	string proxy;
 	if ("proxy" in parsed_arguments.flag_arguments) {
 		proxy = parsed_arguments.flag_arguments["proxy"].join;
 	} else {
 		proxy = "";
 	}
-	
+
 	auto video_id = parsed_arguments.positional_arguments[1];
 	auto input_filename = parsed_arguments.positional_arguments[2];
 	auto output_filename = parsed_arguments.positional_arguments[3];
@@ -144,7 +144,7 @@ Options:
 	ClipTime[] sponsor_times;
 
 	Categories[] categories = categories_from_arguments(parsed_arguments);
-	
+
 	if (categories.length == 0) {
 		writeln("No categories were specified");
 		return 4;
@@ -172,23 +172,23 @@ Options:
 			}
 		}
 
-		if (sponsor_times.length > 0) {		
+		if (sponsor_times.length > 0) {
 			bool ffmpeg_status;
-			
-			ChapterTime[] chapter_times; 
+
+			ChapterTime[] chapter_times;
 			ClipChapterTime[] new_chapter_times;
-			
+
 			chapter_times = get_chapter_times(input_filename);
 			auto input_chapters_count = chapter_times.length;
 			if (input_chapters_count == 0) {
 				chapter_times = [ChapterTime("0", video_length, "sponskrub-content")];
 			}
-			
+
 			new_chapter_times = merge_sponsor_times_with_chapters(sponsor_times, chapter_times);
-			
+
 			if ("chapter" in parsed_arguments.flag_arguments) {
 				writeln("Marking the shilling...");
-				
+
 				ffmpeg_status = add_ffmpeg_metadata(
 					input_filename,
 					output_filename,
@@ -198,11 +198,11 @@ Options:
 				writeln("Surgically removing the shilling...");
 				auto content_times = timestamps_to_keep(new_chapter_times);
 				auto cut_chapter_times = "";
-				
+
 				if (input_chapters_count > 0) {
 					cut_chapter_times = generate_chapters_metadata(calculate_timestamps_for_kept_clips(content_times));
 				}
-				
+
 				ffmpeg_status = run_ffmpeg_filter(
 					input_filename,
 					output_filename,
@@ -211,18 +211,18 @@ Options:
 					cut_chapter_times
 				);
 			}
-			
+
 			if (ffmpeg_status) {
 				if ("keep-date" in parsed_arguments.flag_arguments) {
 					copy_file_modified_time(input_filename, output_filename);
 				}
-				
+
 				writeln("Done!");
 				return 0;
 			} else {
 				writeln("There was an issue generating the output file, is ffmpeg installed? This could be a bug");
 				return 2;
-			}			
+			}
 		} else {
 			writeln("Nothing to be done.");
 			return 3;
@@ -250,7 +250,7 @@ Categories[] categories_from_arguments(Args arguments) {
 	if ("include-nonmusic" in arguments.flag_arguments) {
 		categories ~= Categories.NonMusic;
 	}
-	
+
 	return categories;
 }
 

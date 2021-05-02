@@ -20,25 +20,25 @@ import std.stdio;
 
 struct Stack(T) {
   T[] data;
-  
+
   this(T[] init_data) {
     data = init_data;
   }
-  
+
   bool notEmpty() {
     return data.length > 0;
   }
-  
+
   void push(T datum) {
     data.insertInPlace(0, datum);
   }
-  
+
   T pop() {
     auto datum = peek();
     data.remove(0);
     return datum;
   }
-  
+
   T peek() {
     return data[0];
   }

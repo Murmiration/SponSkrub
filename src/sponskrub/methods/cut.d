@@ -37,7 +37,7 @@ ClipChapterTime[] timestamps_to_keep(ClipChapterTime[] chapters) {
 ClipChapterTime[] calculate_timestamps_for_kept_clips(ClipChapterTime[] chapters) {
 	auto current_time = "0";
 	ClipChapterTime[] adjusted_chapters = [];
-	
+
 	foreach (ClipChapterTime chapter; chapters) {
 		auto duration = chapter.end.to!float - chapter.start.to!float;
 		auto end_time = (current_time.to!float + duration).to!string; // I really need to deal with this bouncing between strings and floats nonsense
@@ -45,7 +45,7 @@ ClipChapterTime[] calculate_timestamps_for_kept_clips(ClipChapterTime[] chapters
 		current_time = end_time;
 	}
 	return adjusted_chapters;
-	
+
 }
 
 string cut_and_cat_clips_filter(ClipChapterTime[] timestamps, FileCategory category) {

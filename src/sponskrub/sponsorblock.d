@@ -29,7 +29,7 @@ import std.random;
 
 enum Categories: string {
 	Sponsor = "sponsor",
-	Intro = "intro", 
+	Intro = "intro",
 	Outro = "outro",
 	Interaction = "interaction",
 	SelfPromo = "selfpromo",

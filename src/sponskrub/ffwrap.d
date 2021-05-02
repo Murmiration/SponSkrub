@@ -59,8 +59,8 @@ string get_video_duration(string filename) {
 ChapterTime[] get_chapter_times(string filename) {
 	auto ffprobe_process = execute(["ffprobe", "-loglevel", "quiet", "-show_chapters", "-print_format", "json", filename]);
 	auto json = parseJSON(ffprobe_process.output);
-	
-	//D can't currently distinguish between null and [] so this'll just silently 
+
+	//D can't currently distinguish between null and [] so this'll just silently
 	//fail because I'm not writing hacks to get around broken language features
 	if (ffprobe_process.status != 0) {
 		return null;
@@ -79,16 +79,16 @@ bool run_ffmpeg_filter(string input_filename, string output_filename, string fil
 			remove(metadata_filename);
 		}
 	}
-	
+
 	string[] args;
 	args = ["ffmpeg", "-loglevel", "warning", "-hide_banner", "-stats", "-i", input_filename];
-	
+
 	if (metadata != "") {
 		metadata_filename = generate_metadata_filename();
 		write_metadata(metadata_filename, metadata);
 		args ~= ["-i", metadata_filename, "-map_metadata", "0", "-map_chapters", "1"];
 	}
-	
+
 	if (category == FileCategory.AUDIO_VIDEO) {
 		args ~= ["-filter_complex", filter, "-map", "[v]", "-map", "[a]", output_filename];
 	} else if (category == FileCategory.VIDEO) {
@@ -106,10 +106,10 @@ bool add_ffmpeg_metadata(string input_filename, string output_filename, string m
 		remove(metadata_filename);
 	}
 	write_metadata(metadata_filename, metadata);
-	
+
 	auto ffmpeg_process = spawnProcess(["ffmpeg", "-loglevel", "warning", "-hide_banner", "-stats", "-i", input_filename, "-i", metadata_filename, "-map", "0", "-map_metadata", "0", "-map_chapters", "1", "-codec", "copy", output_filename]);
 	auto result = wait(ffmpeg_process) == 0;
-	
+
 	return result;
 }
 
